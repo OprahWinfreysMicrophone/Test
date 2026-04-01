@@ -1090,7 +1090,7 @@ body{font-family:'Sora',sans-serif;color:var(--txt);overscroll-behavior:none;-we
 // ══════════════════════════════════════════
 // STACKD SCHOOL v1
 // ══════════════════════════════════════════
-var APP_VERSION = 'stackd-school-v' + Date.now();
+var APP_VERSION = 'stackd-school-v1.3';
 
 // Safe element getter
 function el(id){
@@ -1194,6 +1194,12 @@ function startEditing(){
   };
   el('parent-save-bar').style.display='flex';
 }
+function cancelParentChanges(){
+  STAGING=null;
+  el('parent-save-bar').style.display='none';
+  showToast('Changes discarded.');
+  _navDirect('home');
+}
 function saveParentChanges(){
   if(!STAGING)return;
   DB.subjects=STAGING.subjects;
@@ -1207,13 +1213,21 @@ function saveParentChanges(){
   applyStackTheme(DB.config.stackTheme||'minimal');
   updateNavLabels();
   updateKidName();
-  nav('home');
+  _navDirect('home');
 }
-function cancelParentChanges(){
-  STAGING=null;
-  el('parent-save-bar').style.display='none';
-  showToast('Changes discarded.');
-  nav('home');
+// Direct nav — skips dirty guard, used after save/discard
+function _navDirect(screen){
+  var screens=['home','lessons','tasks','rewards','report','parent'];
+  screens.forEach(function(s){var sc=el('s-'+s);if(sc&&sc.classList)sc.classList.remove('active');var nb=el('nb-'+s);if(nb&&nb.classList)nb.classList.remove('active');});
+  var sc=el('s-'+screen);if(sc&&sc.classList)sc.classList.add('active');
+  var nb=el('nb-'+screen);if(nb&&nb.classList)nb.classList.add('active');
+  var titles={home:'STACKD',lessons:'Lessons',tasks:'Tasks',rewards:'Rewards',report:'Report'};
+  el('app-title').textContent=titles[screen]||'STACKD';
+  if(screen==='home')renderHome();
+  else if(screen==='lessons')renderLessons();
+  else if(screen==='tasks')renderTasks();
+  else if(screen==='rewards')renderRewards();
+  else if(screen==='report')renderReport();
 }
 function getData(key){return STAGING?STAGING[key]:DB[key];}
 
@@ -1345,6 +1359,11 @@ function getRankData(){
 
 // ── NAV ──
 function nav(screen){
+  // Block leaving parent if there are unsaved changes
+  if(el('s-parent').classList.contains('active')&&STAGING&&_stagingDirty()){
+    if(!confirm('You have unsaved changes. Save or discard before leaving.'))return;
+    cancelParentChanges();
+  }
   var screens=['home','lessons','tasks','rewards','report','parent'];
   screens.forEach(function(s){
     var sc=el('s-'+s);if(sc&&sc.classList)sc.classList.remove('active');
@@ -1750,11 +1769,11 @@ function resetDay(){
 
 // ── PARENT DASHBOARD ──
 function renderParent(){
-  startEditing();
-  el('set-kidname').value=(STAGING?STAGING.config.kidName:DB.config.kidName)||'';
-  el('set-warn-mins').value=(STAGING?STAGING.config.warnMins:DB.config.warnMins)||5;
-  el('set-break-mins').value=(STAGING?STAGING.config.breakMins:DB.config.breakMins)||10;
-  el('set-bonus-xp').value=(STAGING?STAGING.config.completionBonusXP:DB.config.completionBonusXP)||50;
+  // Populate fields from live DB (not STAGING — don't dirty on open)
+  el('set-kidname').value=DB.config.kidName||'';
+  el('set-warn-mins').value=DB.config.warnMins||5;
+  el('set-break-mins').value=DB.config.breakMins||10;
+  el('set-bonus-xp').value=DB.config.completionBonusXP||50;
   ptab('subjects');
 }
 
@@ -1891,9 +1910,9 @@ function deleteTask(id){if(!STAGING)startEditing();STAGING.tasks=STAGING.tasks.f
 function addTask(){if(!STAGING)startEditing();STAGING.tasks.push({id:uid(),name:'New Task',xp:20,days:'all',category:'task'});renderTaskEditor();}
 
 function renderSettingsEditor(){
-  el('set-warn-mins').value=(STAGING?STAGING.config.warnMins:DB.config.warnMins)||5;
-  el('set-break-mins').value=(STAGING?STAGING.config.breakMins:DB.config.breakMins)||10;
-  el('set-bonus-xp').value=(STAGING?STAGING.config.completionBonusXP:DB.config.completionBonusXP)||50;
+  el('set-warn-mins').value=DB.config.warnMins||5;
+  el('set-break-mins').value=DB.config.breakMins||10;
+  el('set-bonus-xp').value=DB.config.completionBonusXP||50;
   updateBreakPreview();
 }
 
