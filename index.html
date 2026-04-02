@@ -52,7 +52,7 @@
   --subj-science:#34d399;--subj-history:#fb923c;--subj-art:#facc15;
   --subj-pe:#4ade80;--subj-music:#f97316;--subj-other:#94a3b8;
 }
-[data-theme="light"]{
+[data-theme="light"]:not([data-stack-theme="ops"]):not([data-stack-theme="superhero"]):not([data-stack-theme="princess"]):not([data-stack-theme="littlekid"]){
   --bg:#f5f0e8;--bg2:#fdf9f3;--panel:#ffffff;--panel2:#f9f5ee;
   --border:#e4ddd0;--border2:#ede8df;
   --txt:#1a1714;--txt2:#6b6156;--txt3:#9e9488;--txt4:#c4bdb4;
@@ -66,7 +66,8 @@
   --shadow-md:0 4px 16px rgba(0,0,0,.1),0 2px 4px rgba(0,0,0,.06);
   --shadow-lg:0 8px 32px rgba(0,0,0,.14);
 }
-@media(prefers-color-scheme:light){:root:not([data-theme="dark"]){
+@media(prefers-color-scheme:light){
+  :root:not([data-theme="dark"]):not([data-stack-theme="ops"]):not([data-stack-theme="superhero"]):not([data-stack-theme="princess"]):not([data-stack-theme="littlekid"]){
   --bg:#f5f0e8;--bg2:#fdf9f3;--panel:#ffffff;--panel2:#f9f5ee;
   --border:#e4ddd0;--border2:#ede8df;
   --txt:#1a1714;--txt2:#6b6156;--txt3:#9e9488;--txt4:#c4bdb4;
