@@ -883,7 +883,7 @@ body{font-family:'Sora',sans-serif;color:var(--txt);overscroll-behavior:none;-we
           <div class="lh-timer-lbl" id="lh-timer-lbl">remaining</div>
           <div class="lh-track"><div class="lh-fill" id="lh-fill" style="width:0%"></div></div>
           <div id="lh-link-wrap" style="display:none;margin-top:14px;">
-            <a id="lh-link" href="#" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:var(--accent-dim);border:1px solid rgba(13,148,136,.3);border-radius:20px;padding:7px 16px;font-size:12px;font-weight:700;color:var(--accent);text-decoration:none;transition:all .15s;">
+            <a id="lh-link" href="#" target="_blank" rel="noopener" onclick="if(this.getAttribute('href')==='#')return false;" style="display:inline-flex;align-items:center;gap:6px;background:var(--accent-dim);border:1px solid rgba(13,148,136,.3);border-radius:20px;padding:7px 16px;font-size:12px;font-weight:700;color:var(--accent);text-decoration:none;transition:all .15s;">
               <span>🔗</span><span id="lh-link-lbl">Open lesson</span>
             </a>
           </div>
@@ -1170,7 +1170,7 @@ var DB = {
   load(){
     try{
       var raw=localStorage.getItem(STORAGE_KEY);
-      if(raw){var d=JSON.parse(raw);if(d.subjects)this.subjects=d.subjects;if(d.tasks)this.tasks=d.tasks;if(d.rewards)this.rewards=d.rewards;if(d.config)this.config=Object.assign({},DEFAULT_CONFIG,d.config);}
+      if(raw){var d=JSON.parse(raw);if(d.subjects)this.subjects=d.subjects;if(d.tasks)this.tasks=d.tasks;if(d.rewards&&d.rewards.length)this.rewards=d.rewards;if(d.config)this.config=Object.assign({},DEFAULT_CONFIG,d.config);}
       var rp=localStorage.getItem(STORAGE_KEY+'_priv');if(rp)this._priv=JSON.parse(rp);
       var rg=localStorage.getItem(STORAGE_KEY+'_glob');if(rg)this._glob=JSON.parse(rg);
     }catch(e){}
