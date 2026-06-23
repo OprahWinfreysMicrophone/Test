@@ -17,9 +17,13 @@ document.addEventListener('click', function(e) {
 
   HOW STAFF UPDATE IT:
   - Open the announcement Google Sheet.
-  - Type the announcement into cell B2 to show the banner.
-  - Clear cell B2 to hide the banner.
+  - Type the announcement in the cell under the "What banner says:" heading
+    to show the banner.
+  - Clear that cell to hide the banner.
   (Changes appear on the site within a minute or two.)
+
+  The code finds the right cell by matching the "What banner says:" heading,
+  so the exact column/row doesn't matter as long as the heading stays.
 
   SETUP (already done): File > Share > Publish to web > CSV, then the
   published link is pasted into SHEET_URL below.
@@ -51,14 +55,29 @@ function parseCSV(text) {
   return rows;
 }
 
+// Find the announcement text by locating the "banner" heading and reading the
+// cell directly beneath it. Falls back to the last non-empty cell in row 2.
+function getBannerMessage(rows) {
+  const norm = (v) => (v || '').trim();
+  for (let c = 0; rows[0] && c < rows[0].length; c++) {
+    if (/banner/i.test(norm(rows[0][c]))) {
+      return rows[1] ? norm(rows[1][c]) : '';
+    }
+  }
+  if (rows[1]) {
+    const values = rows[1].map(norm).filter(Boolean);
+    if (values.length) return values[values.length - 1];
+  }
+  return '';
+}
+
 async function loadBanner() {
   if (!SHEET_URL || SHEET_URL.includes('PASTE_YOUR')) return;
   try {
     const res = await fetch(SHEET_URL);
     const csv = await res.text();
     const rows = parseCSV(csv);
-    // B2 = row index 1, column index 1
-    const message = rows[1] && rows[1][1] ? rows[1][1].trim() : '';
+    const message = getBannerMessage(rows);
     if (message) {
       document.getElementById('banner-text').textContent = message;
       document.getElementById('banner').classList.remove('hidden');
