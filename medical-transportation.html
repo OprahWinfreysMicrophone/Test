@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medical Transportation | Senior and Family Services</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Newsreader:opsz,wght@6..72,500;6..72,600;6..72,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div id="banner" class="banner hidden" role="alert" aria-live="polite">
+    <span id="banner-text"></span>
+    <button class="banner-close" onclick="document.getElementById('banner').classList.add('hidden')" aria-label="Close announcement">&times;</button>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">
+        <span class="logo-icon">&#9829;</span>
+        <div>
+          <div class="logo-name">Senior &amp; Family Services</div>
+          <div class="logo-tagline">Caring for our community</div>
+        </div>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="in-home-services.html">In-Home Services</a>
+        <a href="medical-transportation.html" class="nav-current">Transportation</a>
+        <a href="meals.html">Meals on Wheels</a>
+        <a href="community.html">Community</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="index.html#donate" class="nav-donate">Donate</a>
+      </nav>
+      <button class="nav-toggle" onclick="toggleMenu()" aria-label="Open menu">&#9776;</button>
+    </div>
+    <nav class="nav-mobile hidden" id="mobile-menu">
+      <a href="index.html">Home</a>
+      <a href="in-home-services.html">In-Home Services</a>
+      <a href="medical-transportation.html">Transportation</a>
+      <a href="meals.html">Meals on Wheels</a>
+      <a href="community.html">Community</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="index.html#donate">Donate</a>
+    </nav>
+  </header>
+
+  <section class="hero hero-sub">
+    <div class="container hero-inner">
+      <h1>Medical Transportation</h1>
+      <p>Safe, dependable rides that keep you connected to the care you need.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Rides You Can Count On</h2>
+      <p class="section-sub">Getting to appointments shouldn't be a barrier to care</p>
+      <div class="meals-info">
+        <div class="meals-card">
+          <div class="service-icon">&#129658;</div>
+          <h3>Medical Appointments</h3>
+          <p>Transportation to doctor visits, treatments, therapy, and follow-up care across the area.</p>
+        </div>
+        <div class="meals-card">
+          <div class="service-icon">&#128682;</div>
+          <h3>Door-to-Door Service</h3>
+          <p>Friendly drivers assist from your door to the vehicle and into your appointment when needed.</p>
+        </div>
+        <div class="meals-card">
+          <div class="service-icon">&#128197;</div>
+          <h3>Easy Scheduling</h3>
+          <p>Call ahead to reserve your ride. We'll work with you to plan recurring or one-time trips.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-section section">
+    <div class="container">
+      <div class="cta-box">
+        <h2>Schedule a Ride</h2>
+        <p>To book transportation or ask about eligibility, call <a href="tel:+18122541881">(812) 254-1881</a> or email <a href="mailto:jrook.safsinc@sbcglobal.net">jrook.safsinc@sbcglobal.net</a>.</p>
+        <a href="index.html#contact" class="btn btn-primary">Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-logo">Senior &amp; Family Services</div>
+      <p class="footer-copy">&copy; <span id="year"></span> Senior and Family Services, Inc. All rights reserved.</p>
+      <p class="footer-copy">safsinc.org</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

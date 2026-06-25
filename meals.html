@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meals on Wheels | Senior and Family Services</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Newsreader:opsz,wght@6..72,500;6..72,600;6..72,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div id="banner" class="banner hidden" role="alert" aria-live="polite">
+    <span id="banner-text"></span>
+    <button class="banner-close" onclick="document.getElementById('banner').classList.add('hidden')" aria-label="Close announcement">&times;</button>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">
+        <span class="logo-icon">&#9829;</span>
+        <div>
+          <div class="logo-name">Senior &amp; Family Services</div>
+          <div class="logo-tagline">Caring for our community</div>
+        </div>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="in-home-services.html">In-Home Services</a>
+        <a href="medical-transportation.html">Transportation</a>
+        <a href="meals.html" class="nav-current">Meals on Wheels</a>
+        <a href="community.html">Community</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="index.html#donate" class="nav-donate">Donate</a>
+      </nav>
+      <button class="nav-toggle" onclick="toggleMenu()" aria-label="Open menu">&#9776;</button>
+    </div>
+    <nav class="nav-mobile hidden" id="mobile-menu">
+      <a href="index.html">Home</a>
+      <a href="in-home-services.html">In-Home Services</a>
+      <a href="medical-transportation.html">Transportation</a>
+      <a href="meals.html">Meals on Wheels</a>
+      <a href="community.html">Community</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="index.html#donate">Donate</a>
+    </nav>
+  </header>
+
+  <section class="hero hero-sub">
+    <div class="container hero-inner">
+      <h1>Meals on Wheels</h1>
+      <p>Nutritious, freshly prepared meals delivered to seniors and homebound neighbors across our community.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">About the Program</h2>
+      <p class="section-sub">Good food and a friendly check-in, right to the door</p>
+      <div class="meals-info">
+        <div class="meals-card">
+          <div class="service-icon">&#127858;</div>
+          <h3>Hot, Balanced Meals</h3>
+          <p>Each meal is planned for senior nutrition and prepared fresh, with a rotating menu so there's always something to look forward to.</p>
+        </div>
+        <div class="meals-card">
+          <div class="service-icon">&#128666;</div>
+          <h3>Delivered to You</h3>
+          <p>Volunteers deliver meals on weekdays, offering a warm hello and a quick wellness check with every visit.</p>
+        </div>
+        <div class="meals-card">
+          <div class="service-icon">&#128222;</div>
+          <h3>Sign Up or Volunteer</h3>
+          <p>To start receiving meals, refer a loved one, or volunteer as a driver, call <a href="tel:+18122541881">(812) 254-1881</a> or email <a href="mailto:jrook.safsinc@sbcglobal.net">jrook.safsinc@sbcglobal.net</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="menu" class="calendar-section section">
+    <div class="container">
+      <h2 class="section-title">This Month's Lunch Menu</h2>
+      <p class="section-sub">Menus are subject to change based on availability</p>
+      <div class="calendar-wrap" data-calendar
+           data-cal-url="https://docs.google.com/spreadsheets/d/e/2PACX-1vTOvU22yMDIhE8uy3leOkEXfx4jh115HxUqFx6LqZTJZWmHrXbCkWnQsT8EYuuFm9GhJ6kUpaoKsrhe/pub?gid=1308458512&single=true&output=csv"
+           data-cal-kind="meals">
+        <div class="cal-title"></div>
+        <div class="cal-body">
+          <p class="cal-sub cal-loading">The lunch menu will appear here.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-logo">Senior &amp; Family Services</div>
+      <p class="footer-copy">&copy; <span id="year"></span> Senior and Family Services, Inc. All rights reserved.</p>
+      <p class="footer-copy">safsinc.org</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

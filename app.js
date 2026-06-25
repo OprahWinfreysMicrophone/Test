@@ -7,30 +7,13 @@ function toggleMenu() {
 document.addEventListener('click', function(e) {
   const menu = document.getElementById('mobile-menu');
   const toggle = document.querySelector('.nav-toggle');
+  if (!menu || !toggle) return;
   if (!menu.contains(e.target) && !toggle.contains(e.target)) {
     menu.classList.add('hidden');
   }
 });
 
-/*
-  ANNOUNCEMENT BANNER - loads text from a published Google Sheet
-
-  HOW STAFF UPDATE IT:
-  - Open the announcement Google Sheet.
-  - Type the announcement in the cell under the "What banner says:" heading
-    to show the banner.
-  - Clear that cell to hide the banner.
-  (Changes appear on the site within a minute or two.)
-
-  The code finds the right cell by matching the "What banner says:" heading,
-  so the exact column/row doesn't matter as long as the heading stays.
-
-  SETUP (already done): File > Share > Publish to web > CSV, then the
-  published link is pasted into SHEET_URL below.
-*/
-const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTOvU22yMDIhE8uy3leOkEXfx4jh115HxUqFx6LqZTJZWmHrXbCkWnQsT8EYuuFm9GhJ6kUpaoKsrhe/pub?output=csv';
-
-// Minimal CSV parser that handles quoted fields and commas within text.
+// Minimal CSV parser that handles quoted fields, commas, and in-cell newlines.
 function parseCSV(text) {
   const rows = [];
   let row = [], field = '', inQuotes = false;
@@ -55,8 +38,28 @@ function parseCSV(text) {
   return rows;
 }
 
-// Find the announcement text by locating the "banner" heading and reading the
-// cell directly beneath it. Falls back to the last non-empty cell in row 2.
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function colIndex(headers, regex) {
+  for (let i = 0; i < headers.length; i++) {
+    if (regex.test((headers[i] || '').trim())) return i;
+  }
+  return -1;
+}
+
+/*
+  ANNOUNCEMENT BANNER - loads text from a published Google Sheet
+
+  HOW STAFF UPDATE IT:
+  - Type the announcement in the cell under the "What banner says:" heading
+    to show the banner; clear that cell to hide it.
+  The code matches the heading, so the exact cell doesn't matter.
+*/
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTOvU22yMDIhE8uy3leOkEXfx4jh115HxUqFx6LqZTJZWmHrXbCkWnQsT8EYuuFm9GhJ6kUpaoKsrhe/pub?output=csv';
+
 function getBannerMessage(rows) {
   const norm = (v) => (v || '').trim();
   for (let c = 0; rows[0] && c < rows[0].length; c++) {
@@ -72,15 +75,15 @@ function getBannerMessage(rows) {
 }
 
 async function loadBanner() {
-  if (!SHEET_URL || SHEET_URL.includes('PASTE_YOUR')) return;
+  const bannerEl = document.getElementById('banner');
+  if (!bannerEl || !SHEET_URL || SHEET_URL.includes('PASTE_')) return;
   try {
     const res = await fetch(SHEET_URL);
-    const csv = await res.text();
-    const rows = parseCSV(csv);
+    const rows = parseCSV(await res.text());
     const message = getBannerMessage(rows);
     if (message) {
       document.getElementById('banner-text').textContent = message;
-      document.getElementById('banner').classList.remove('hidden');
+      bannerEl.classList.remove('hidden');
     }
   } catch (e) {}
 }
@@ -88,25 +91,26 @@ async function loadBanner() {
 loadBanner();
 
 /*
-  EVENTS CALENDAR - current month grid from a published Google Sheet
+  CALENDARS - current-month grids driven by published Google Sheets.
 
-  SHEET LAYOUT (header row in row 1, then one row per entry):
-    Date       | Meal                              | Event
-    6/23/2026  | Baked chicken, green beans, roll  |
-    6/24/2026  | Meatloaf, mashed potatoes         | Bingo 1pm
-  - One row per day for the Meals on Wheels menu.
-  - For more than one event on the same day, add another row with that date.
-  - Blank cells are fine. Dates work as M/D/YYYY (Sheets default) or YYYY-MM-DD.
+  Mark a container in the HTML like this:
+    <div class="calendar-wrap" data-calendar
+         data-cal-url="<published CSV link>"
+         data-cal-kind="meals">          (or "activities")
+      <div class="cal-title"></div>
+      <div class="cal-body"><p class="cal-loading">Loading...</p></div>
+    </div>
 
-  SETUP: put this on a tab, then File > Share > Publish to web > that tab >
-  CSV > Publish, and paste the link into CALENDAR_SHEET_URL below.
+  SHEET LAYOUT: a "Date" column plus a content column.
+    - Activities sheet: Date | Activity (or Event)
+    - Meals sheet:      Date | Meal  (one row per menu item; repeat the date
+                        to list several items on the same day)
+  Dates accepted: M/D/YYYY, M/D/YY, or YYYY-MM-DD.
 */
-const CALENDAR_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTOvU22yMDIhE8uy3leOkEXfx4jh115HxUqFx6LqZTJZWmHrXbCkWnQsT8EYuuFm9GhJ6kUpaoKsrhe/pub?gid=1308458512&single=true&output=csv';
-
-function escapeHtml(s) {
-  return s.replace(/[&<>"']/g, c =>
-    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-}
+const CAL_KINDS = {
+  meals:      { match: /meal|lunch|menu/i,       emoji: '\u{1F37D}', cls: 'cal-meal' },
+  activities: { match: /activit|event|program/i, emoji: '\u{1F4C5}', cls: 'cal-event' }
+};
 
 // Turn a date string into a "YYYY-M-D" key (no leading zeros).
 function parseDateKey(str) {
@@ -127,36 +131,41 @@ function parseDateKey(str) {
   return null;
 }
 
-function colIndex(headers, regex) {
-  for (let i = 0; i < headers.length; i++) {
-    if (regex.test((headers[i] || '').trim())) return i;
+function pickValueColumn(headers, kind) {
+  const k = CAL_KINDS[kind];
+  const dateCol = colIndex(headers, /date/i);
+  if (k) {
+    const idx = colIndex(headers, k.match);
+    if (idx !== -1) return idx;
   }
+  for (let i = 0; i < headers.length; i++) if (i !== dateCol) return i;
   return -1;
 }
 
-function buildCalendarData(rows) {
+function buildEntries(rows, kind) {
   const data = {};
   if (!rows.length) return data;
   const headers = rows[0];
   const dateCol = colIndex(headers, /date/i);
-  const mealCol = colIndex(headers, /meal/i);
-  const eventCol = colIndex(headers, /event/i);
-  if (dateCol === -1) return data;
+  const valCol = pickValueColumn(headers, kind);
+  if (dateCol === -1 || valCol === -1) return data;
   for (let r = 1; r < rows.length; r++) {
     const key = parseDateKey(rows[r][dateCol]);
     if (!key) continue;
-    if (!data[key]) data[key] = { meals: [], events: [] };
-    const meal = mealCol !== -1 ? (rows[r][mealCol] || '').trim() : '';
-    const event = eventCol !== -1 ? (rows[r][eventCol] || '').trim() : '';
-    if (meal) data[key].meals.push(meal);
-    if (event) data[key].events.push(event);
+    const cell = (rows[r][valCol] || '').trim();
+    if (!cell) continue;
+    if (!data[key]) data[key] = [];
+    cell.split(/\r?\n/).map(s => s.trim()).filter(Boolean)
+      .forEach(item => data[key].push(item));
   }
   return data;
 }
 
-function renderCalendar(data) {
-  const wrap = document.getElementById('calendar-grid');
-  if (!wrap) return;
+function renderCalendar(container, data, kind) {
+  const grid = container.querySelector('.cal-body');
+  const titleEl = container.querySelector('.cal-title');
+  if (!grid) return;
+  const k = CAL_KINDS[kind] || { emoji: '', cls: '' };
   const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'];
   const dow = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -168,7 +177,6 @@ function renderCalendar(data) {
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const todayKey = `${year}-${month + 1}-${now.getDate()}`;
 
-  const titleEl = document.getElementById('calendar-title');
   if (titleEl) titleEl.textContent = `${monthNames[month]} ${year}`;
 
   let html = '<div class="cal-grid">';
@@ -176,30 +184,26 @@ function renderCalendar(data) {
   for (let i = 0; i < startDay; i++) html += '<div class="cal-cell cal-empty"></div>';
   for (let day = 1; day <= daysInMonth; day++) {
     const key = `${year}-${month + 1}-${day}`;
-    const entry = data[key];
+    const items = data[key] || [];
     html += `<div class="cal-cell${key === todayKey ? ' cal-today' : ''}">`;
     html += `<div class="cal-daynum">${day}</div>`;
-    if (entry) {
-      entry.meals.forEach(t => {
-        html += `<div class="cal-item cal-meal"><span class="cal-tag">&#127858;</span><span>${escapeHtml(t)}</span></div>`;
-      });
-      entry.events.forEach(t => {
-        html += `<div class="cal-item cal-event"><span class="cal-tag">&#128197;</span><span>${escapeHtml(t)}</span></div>`;
-      });
-    }
+    items.forEach(t => {
+      html += `<div class="cal-item ${k.cls}"><span class="cal-tag">${k.emoji}</span><span>${escapeHtml(t)}</span></div>`;
+    });
     html += '</div>';
   }
   html += '</div>';
-  wrap.innerHTML = html;
+  grid.innerHTML = html;
 }
 
-async function loadCalendar() {
-  if (!CALENDAR_SHEET_URL || CALENDAR_SHEET_URL.includes('PASTE_')) return;
+async function initCalendar(container) {
+  const url = container.getAttribute('data-cal-url');
+  const kind = container.getAttribute('data-cal-kind') || '';
+  if (!url || url.includes('PASTE_')) return;
   try {
-    const res = await fetch(CALENDAR_SHEET_URL);
-    const csv = await res.text();
-    renderCalendar(buildCalendarData(parseCSV(csv)));
+    const res = await fetch(url);
+    renderCalendar(container, buildEntries(parseCSV(await res.text()), kind), kind);
   } catch (e) {}
 }
 
-loadCalendar();
+document.querySelectorAll('[data-calendar]').forEach(initCalendar);

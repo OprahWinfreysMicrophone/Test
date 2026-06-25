@@ -18,24 +18,28 @@
 
   <header class="site-header">
     <div class="container header-inner">
-      <div class="logo">
+      <a class="logo" href="index.html">
         <span class="logo-icon">&#9829;</span>
         <div>
           <div class="logo-name">Senior &amp; Family Services</div>
           <div class="logo-tagline">Caring for our community</div>
         </div>
-      </div>
+      </a>
       <nav class="nav" aria-label="Main navigation">
-        <a href="#services">Services</a>
-        <a href="#calendar">Events</a>
+        <a href="in-home-services.html">In-Home Services</a>
+        <a href="medical-transportation.html">Transportation</a>
+        <a href="meals.html">Meals on Wheels</a>
+        <a href="community.html">Community</a>
         <a href="#contact">Contact</a>
         <a href="#donate" class="nav-donate">Donate</a>
       </nav>
       <button class="nav-toggle" onclick="toggleMenu()" aria-label="Open menu">&#9776;</button>
     </div>
     <nav class="nav-mobile hidden" id="mobile-menu">
-      <a href="#services" onclick="toggleMenu()">Services</a>
-      <a href="#calendar" onclick="toggleMenu()">Events</a>
+      <a href="in-home-services.html">In-Home Services</a>
+      <a href="medical-transportation.html">Transportation</a>
+      <a href="meals.html">Meals on Wheels</a>
+      <a href="community.html">Community</a>
       <a href="#contact" onclick="toggleMenu()">Contact</a>
       <a href="#donate" onclick="toggleMenu()">Donate</a>
     </nav>
@@ -44,62 +48,39 @@
   <section class="hero">
     <div class="container hero-inner">
       <h1>Serving Seniors &amp; Families<br>in Our Community</h1>
-      <p>We provide compassionate support, resources, and connections to help seniors and families thrive.</p>
-      <div class="hero-buttons">
-        <a href="#services" class="btn btn-primary">Our Services</a>
-        <a href="#contact" class="btn btn-outline">Get Help</a>
-      </div>
+      <p>We provide compassionate support, resources, and connections that help seniors and families live with dignity, independence, and connection.</p>
     </div>
   </section>
 
   <section id="services" class="services section">
     <div class="container">
-      <h2 class="section-title">How We Help</h2>
-      <p class="section-sub">Providing essential services to those who need them most</p>
-      <div class="services-grid">
-        <div class="service-card">
+      <h2 class="section-title">How Can We Help?</h2>
+      <p class="section-sub">Choose a service to learn more</p>
+      <div class="landing-grid">
+        <a class="service-link-card" href="in-home-services.html">
+          <div class="service-icon">&#127968;</div>
+          <h3>In-Home Services</h3>
+          <p>Personal care, homemaking, and support that help you live safely and independently at home.</p>
+          <span class="card-link">Learn more &rarr;</span>
+        </a>
+        <a class="service-link-card" href="medical-transportation.html">
+          <div class="service-icon">&#128663;</div>
+          <h3>Medical Transportation</h3>
+          <p>Safe, reliable rides to medical appointments, treatments, and pharmacy visits.</p>
+          <span class="card-link">Learn more &rarr;</span>
+        </a>
+        <a class="service-link-card" href="meals.html">
           <div class="service-icon">&#127858;</div>
-          <h3>Nutrition &amp; Meals</h3>
-          <p>Hot meals, meal delivery, and nutrition assistance for seniors and families facing food insecurity.</p>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">&#128664;</div>
-          <h3>Transportation</h3>
-          <p>Rides to medical appointments, grocery stores, and community events for those who need it.</p>
-        </div>
-        <div class="service-card">
+          <h3>Meals on Wheels</h3>
+          <p>Nutritious, freshly prepared meals delivered to seniors and homebound neighbors.</p>
+          <span class="card-link">Learn more &rarr;</span>
+        </a>
+        <a class="service-link-card" href="community.html">
           <div class="service-icon">&#129309;</div>
-          <h3>Care Coordination</h3>
-          <p>Connecting individuals with health services, social workers, and community resources.</p>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">&#128106;</div>
-          <h3>Family Support</h3>
-          <p>Counseling, parenting resources, and emergency assistance for families in need.</p>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">&#128218;</div>
-          <h3>Education &amp; Outreach</h3>
-          <p>Workshops, classes, and information sessions to empower our community members.</p>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">&#128147;</div>
-          <h3>Social Connection</h3>
-          <p>Activities, groups, and events to reduce isolation and build community bonds.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="calendar" class="calendar-section section">
-    <div class="container">
-      <h2 class="section-title">Upcoming Events</h2>
-      <p class="section-sub">Stay connected with what's happening in our community</p>
-      <div class="calendar-wrap">
-        <div id="calendar-title" class="cal-title"></div>
-        <div id="calendar-grid" class="cal-body">
-          <p class="cal-sub cal-loading">The calendar will appear here once it's connected to the schedule.</p>
-        </div>
+          <h3>Community</h3>
+          <p>Activities, events, and connections that reduce isolation and bring neighbors together.</p>
+          <span class="card-link">Learn more &rarr;</span>
+        </a>
       </div>
     </div>
   </section>

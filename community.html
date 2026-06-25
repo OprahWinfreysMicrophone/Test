@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community | Senior and Family Services</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Newsreader:opsz,wght@6..72,500;6..72,600;6..72,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div id="banner" class="banner hidden" role="alert" aria-live="polite">
+    <span id="banner-text"></span>
+    <button class="banner-close" onclick="document.getElementById('banner').classList.add('hidden')" aria-label="Close announcement">&times;</button>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">
+        <span class="logo-icon">&#9829;</span>
+        <div>
+          <div class="logo-name">Senior &amp; Family Services</div>
+          <div class="logo-tagline">Caring for our community</div>
+        </div>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="in-home-services.html">In-Home Services</a>
+        <a href="medical-transportation.html">Transportation</a>
+        <a href="meals.html">Meals on Wheels</a>
+        <a href="community.html" class="nav-current">Community</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="index.html#donate" class="nav-donate">Donate</a>
+      </nav>
+      <button class="nav-toggle" onclick="toggleMenu()" aria-label="Open menu">&#9776;</button>
+    </div>
+    <nav class="nav-mobile hidden" id="mobile-menu">
+      <a href="index.html">Home</a>
+      <a href="in-home-services.html">In-Home Services</a>
+      <a href="medical-transportation.html">Transportation</a>
+      <a href="meals.html">Meals on Wheels</a>
+      <a href="community.html">Community</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="index.html#donate">Donate</a>
+    </nav>
+  </header>
+
+  <section class="hero hero-sub">
+    <div class="container hero-inner">
+      <h1>Community</h1>
+      <p>Activities, events, and connections that reduce isolation and bring neighbors together.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Stay Connected</h2>
+      <p class="section-sub">There's always a way to get involved</p>
+      <div class="meals-info">
+        <div class="meals-card">
+          <div class="service-icon">&#127881;</div>
+          <h3>Events &amp; Activities</h3>
+          <p>Social gatherings, classes, and seasonal events that make it easy to meet others and have fun.</p>
+        </div>
+        <div class="meals-card">
+          <div class="service-icon">&#129309;</div>
+          <h3>Volunteer</h3>
+          <p>Share your time and talents. Volunteers are the heart of everything we do for the community.</p>
+        </div>
+        <div class="meals-card">
+          <div class="service-icon">&#128218;</div>
+          <h3>Resources &amp; Outreach</h3>
+          <p>Workshops and information sessions that connect people with the support they need.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="calendar" class="calendar-section section">
+    <div class="container">
+      <h2 class="section-title">Upcoming Activities</h2>
+      <p class="section-sub">See what's happening this month</p>
+      <div class="calendar-wrap" data-calendar
+           data-cal-url="PASTE_ACTIVITIES_CSV_URL_HERE"
+           data-cal-kind="activities">
+        <div class="cal-title"></div>
+        <div class="cal-body">
+          <p class="cal-sub cal-loading">The activities calendar will appear here once it's connected.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-logo">Senior &amp; Family Services</div>
+      <p class="footer-copy">&copy; <span id="year"></span> Senior and Family Services, Inc. All rights reserved.</p>
+      <p class="footer-copy">safsinc.org</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
