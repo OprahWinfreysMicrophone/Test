@@ -101,7 +101,7 @@ loadBanner();
   SETUP: put this on a tab, then File > Share > Publish to web > that tab >
   CSV > Publish, and paste the link into CALENDAR_SHEET_URL below.
 */
-const CALENDAR_SHEET_URL = 'PASTE_CALENDAR_CSV_URL_HERE';
+const CALENDAR_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTOvU22yMDIhE8uy3leOkEXfx4jh115HxUqFx6LqZTJZWmHrXbCkWnQsT8EYuuFm9GhJ6kUpaoKsrhe/pub?gid=1308458512&single=true&output=csv';
 
 function escapeHtml(s) {
   return s.replace(/[&<>"']/g, c =>
